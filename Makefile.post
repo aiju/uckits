@@ -1,0 +1,21 @@
+include $(UCKITS)/$(TARGET)/Makefile.post
+
+.PHONY: all
+all: $(TARG).bin
+
+$(TARG).bin: $(TARG).elf
+	$(OBJCOPY) -O binary $< $@
+
+$(TARG).elf: $(OFILES) $(UCKITS)/$(TARGET)/lib/libc.a $(UCKITS)/$(TARGET)/link.ld
+	$(LD) -T $(UCKITS)/$(TARGET)/link.ld $(UCKITS)/$(TARGET)/lib/libc.a $(OFILES) -o $@
+
+%.o: %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
+.PHONY: clean
+clean:
+	$(RM) $(OFILES)
+
+.PHONY: nuke
+nuke: clean
+	$(RM) $(TARG).bin $(TARG).hex $(TARG).elf

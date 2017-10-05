@@ -1,0 +1,8 @@
+*.o
+*.a
+*.bin
+*.elf
+!ext/fetch.sh
+ext/**
+!gcc/build.sh
+gcc/**

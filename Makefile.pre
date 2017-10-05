@@ -1,0 +1,11 @@
+.SUFFIXES:
+
+PATH:=$(UCKITS)/gcc/bin:$(PATH)
+
+include $(UCKITS)/$(TARGET)/Makefile.pre
+
+CC=$(ARCH)-gcc
+LD=$(ARCH)-ld
+OBJCOPY=$(ARCH)-objcopy
+RM=rm -f
+CFLAGS+=-I$(UCKITS)/include -I$(UCKITS)/$(TARGET)/include -fno-diagnostics-color -fno-diagnostics-show-caret -Wall -Wno-parentheses -Wno-missing-braces -ffreestanding
