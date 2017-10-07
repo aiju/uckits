@@ -23,19 +23,10 @@ typedef long	jmp_buf[2];
 #define	JMPBUFPC	1
 #define	JMPBUFDPC	0
 
-typedef	char*	va_list;
-#define va_start(list, start) list =\
-	(sizeof(start) < 4?\
-		(char*)((int*)&(start)+1):\
-		(char*)(&(start)+1))
-#define va_end(list)\
-	USED(list)
-#define va_arg(list, mode)\
-	((sizeof(mode) == 1)?\
-		((list += 4), (mode*)list)[-4]:\
-	(sizeof(mode) == 2)?\
-		((list += 4), (mode*)list)[-2]:\
-		((list += sizeof(mode)), (mode*)list)[-1])
+typedef __builtin_va_list va_list;
+#define va_start __builtin_va_start
+#define va_arg __builtin_va_arg
+#define va_end __builtin_va_end
 
 #define nil ((void*)0)
 

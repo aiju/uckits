@@ -1,4 +1,5 @@
 include $(UCKITS)/$(TARGET)/Makefile.post
+LDSCRIPT?=link
 
 .PHONY: all
 all: $(TARG).bin
@@ -7,7 +8,7 @@ $(TARG).bin: $(TARG).elf
 	$(OBJCOPY) -O binary $< $@
 
 $(TARG).elf: $(OFILES) $(UCKITS)/$(TARGET)/lib/libc.a $(UCKITS)/$(TARGET)/link.ld
-	$(LD) -T $(UCKITS)/$(TARGET)/link.ld $(UCKITS)/$(TARGET)/lib/libc.a $(OFILES) -o $@
+	$(LD) -T $(UCKITS)/$(TARGET)/$(LDSCRIPT).ld $(UCKITS)/$(TARGET)/lib/libc.a $(OFILES) -o $@
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $< -o $@

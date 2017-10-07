@@ -1,2 +1,3 @@
 ARCH=arm-none-eabi
-CFLAGS+=-D$(CPU)
+CFLAGS+=-D$(CPU) -mthumb
+

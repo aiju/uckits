@@ -1,8 +1,8 @@
 ENTRY(_start)
 
 MEMORY {
-	rom (rx)	: ORIGIN = 0x08000000, LENGTH = 128K
-	ram (!rx)	: ORIGIN = 0x20000000, LENGTH = 20K
+	rom (rx)	: ORIGIN = 0x08005000, LENGTH = 128K
+	ram (!rx)	: ORIGIN = 0x20001000, LENGTH = 16K
 }
 
 PROVIDE(_estack = ORIGIN(ram) + LENGTH(ram));

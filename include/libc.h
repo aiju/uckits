@@ -464,3 +464,5 @@ extern char *argv0;
 #define	ARGC()		_argc
 
 #define ERRMAX 128
+
+extern char _end[], _etext[], _data[], _edata[], _estack[];

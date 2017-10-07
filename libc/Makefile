@@ -14,6 +14,9 @@ all: $(UCKITS)/$(TARGET)/lib/libc.a
 $(UCKITS)/$(TARGET)/lib/libc.a: $(OFILES)
 	ar cr $@ $(OFILES)
 
+stm32/%.o: stm32/%.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
 stm32/%.o: stm32/%.S
 	$(CC) -c $(CFLAGS) $< -o $@
 
