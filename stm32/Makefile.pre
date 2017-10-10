@@ -1,3 +1,2 @@
 ARCH=arm-none-eabi
-CFLAGS+=-D$(CPU) -mthumb
-
+CFLAGS+=-D$(CPU) -mthumb -march=armv7-m

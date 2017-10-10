@@ -2,7 +2,10 @@
 
 PATH:=$(UCKITS)/gcc/bin:$(PATH)
 
-include $(UCKITS)/$(TARGET)/Makefile.pre
+TDIR:=$(UCKITS)/$(TARGET)
+LDIR:=$(TDIR)/lib
+
+include $(TDIR)/Makefile.pre
 
 CC=$(ARCH)-gcc
 LD=$(ARCH)-ld

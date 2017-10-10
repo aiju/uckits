@@ -278,5 +278,5 @@
 #error "define CPU"
 #endif
 
-#define SETFIELD(a,b,c,d) (a->b = a->b & a##_##b##_##c##_Msk | (d) << a##_##b##_##c##_Pos)
-#define SETFIELDE(a,b,c,d) (a->b = a->b & a##_##b##_##c##_Msk | a##_##b##_##c##_##d)
+#define SETFIELD(a,b,c,d) (a->b = a->b & ~a##_##b##_##c##_Msk | (d) << a##_##b##_##c##_Pos)
+#define SETFIELDE(a,b,c,d) (a->b = a->b & ~a##_##b##_##c##_Msk | a##_##b##_##c##_##d)

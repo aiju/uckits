@@ -438,6 +438,7 @@ extern	int	wstat(char*, uchar*, int);
 
 extern	void	rerrstr(char*, uint);
 extern	void	werrstr(char*, ...);
+extern	void	werrstr1(char*);
 
 extern	long	ainc(long*);
 extern	long	adec(long*);
@@ -466,3 +467,9 @@ extern char *argv0;
 #define ERRMAX 128
 
 extern char _end[], _etext[], _data[], _edata[], _estack[];
+
+extern char errbuf[];
+
+extern char Enodev[];
+extern char Ebadctl[];
+extern char Eio[];

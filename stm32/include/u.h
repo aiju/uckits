@@ -17,6 +17,7 @@ typedef unsigned long long uvlong;
 
 typedef u32int uintptr;
 typedef u32int Rune;
+typedef u32int size_t;
 
 typedef long	jmp_buf[2];
 #define	JMPBUFSP	0
@@ -42,3 +43,5 @@ union FPdbleword
 };
 
 #define USED(x) ((void)(x))
+
+#define ROM __attribute__((section(".rodata,\"a\",%progbits //")))

@@ -2,7 +2,7 @@ TARGET=stm32
 
 include ../Makefile.pre
 
-OFILES=\
+OFILES:=\
 	$(patsubst port/%.c,stm32/%.o,$(wildcard port/*.c)) \
 	$(patsubst stm32/%.c,stm32/%.o,$(wildcard stm32/*.c)) \
 	$(patsubst stm32/%.S,stm32/%.o,$(wildcard stm32/*.S))
