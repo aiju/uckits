@@ -172,6 +172,9 @@ extern	int	fmtvprint(Fmt*, char*, va_list);
 extern	int	fmtrune(Fmt*, int);
 extern	int	fmtstrcpy(Fmt*, char*);
 extern	int	fmtrunestrcpy(Fmt*, Rune*);
+
+extern	void	floatfmtinstall(void);
+
 /*
  * error string for %r
  * supplied on per os basis, not part of fmt library
@@ -416,15 +419,11 @@ extern	void**	privalloc(void);
 
 extern	void	abort(void);
 extern	int	access(char*, int);
-extern	long	alarm(ulong);
-extern	int	await(char*, int);
 extern	int	close(int);
 extern	int	create(char*, int, ulong);
 extern	int	dup(int, int);
 extern	int	errstr(char*, uint);
 extern	int	open(char*, int);
-extern	int	fd2path(int, char*, int);
-extern	int	pipe(int*);
 extern	long	pread(int, void*, long, vlong);
 extern	long	pwrite(int, void*, long, vlong);
 extern	long	read(int, void*, long);
@@ -432,9 +431,7 @@ extern	long	readn(int, void*, long);
 extern	int	remove(char*);
 extern	vlong	seek(int, vlong, int);
 extern	int	sleep(long);
-extern	int	stat(char*, uchar*, int);
-extern	long	write(int, void*, long);
-extern	int	wstat(char*, uchar*, int);
+extern	ssize_t	write(int, void*, size_t);
 
 extern	void	rerrstr(char*, uint);
 extern	void	werrstr(char*, ...);

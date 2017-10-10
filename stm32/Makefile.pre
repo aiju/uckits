@@ -1,2 +1,2 @@
 ARCH=arm-none-eabi
-CFLAGS+=-D$(CPU) -mthumb -march=armv7-m
+CFLAGS+=-D$(CPU) -mthumb -march=armv7-m -msoft-float

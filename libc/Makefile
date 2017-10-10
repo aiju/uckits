@@ -4,6 +4,7 @@ include ../Makefile.pre
 
 OFILES:=\
 	$(patsubst port/%.c,stm32/%.o,$(wildcard port/*.c)) \
+	$(patsubst fmt/%.c,stm32/%.o,$(wildcard fmt/*.c)) \
 	$(patsubst stm32/%.c,stm32/%.o,$(wildcard stm32/*.c)) \
 	$(patsubst stm32/%.S,stm32/%.o,$(wildcard stm32/*.S))
 
@@ -22,6 +23,10 @@ stm32/%.o: stm32/%.S
 
 stm32/%.o: port/%.c
 	$(CC) -c $(CFLAGS) $< -o $@
+
+stm32/%.o: fmt/%.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
 
 .PHONY: clean
 clean:
