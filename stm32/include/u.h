@@ -47,3 +47,34 @@ union FPdbleword
 
 #define ROM __attribute__((section(".rodata,\"a\",%progbits //")))
 #define WEAK __attribute__((weak))
+
+typedef struct Ureg Ureg;
+struct Ureg {
+	u32int irq, sp, ret;
+	u32int r4, r5, r6, r7, r8, r9, r10, r11;
+	u32int r0, r1, r2, r3, r12, lr, pc, psr;
+};
+
+static inline int spllo(void)
+{
+	int rv;
+	
+	__asm__("mrs %0, primask" : "=r"(rv));
+	__asm__ volatile("cpsie i");
+	__asm__ volatile("isb");
+	return rv;
+}
+
+static inline int splhi(void)
+{
+	int rv;
+	
+	__asm__("mrs %0, primask" : "=r"(rv));
+	__asm__ volatile("cpsid i");
+	return rv;
+}
+
+static inline void splx(int s)
+{
+	__asm__ volatile("msr primask, %0" :: "r"(s));
+}

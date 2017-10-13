@@ -24,7 +24,8 @@ SECTIONS {
 		_edata = .;
 	} >ram AT>rom
 	.bss : {
-		*(.bss)
+		*(.bss*)
+		*(COMMON)
 		. = ALIGN(4);
 		_end = .;
 	} >ram

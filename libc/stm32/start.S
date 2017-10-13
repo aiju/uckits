@@ -1,4 +1,6 @@
-.thumb
+.syntax unified
+.code 16
+
 .section .vectors
 .global _vectors
 .extern _estack
@@ -96,47 +98,40 @@ _start:
 	BL main
 _loop:	B _loop
 
+.global _nmi, _hard, _pagefault, _busfault, _usagefault, _svcall, _pendsv, _systick, _irqdef
+.weak _nmi, _hard, _pagefault, _busfault, _usagefault, _svcall, _pendsv, _systick, _irqdef
 .thumb_func
-.global _nmi
 _nmi:
-	b _nmi
-
 .thumb_func
-.global _hard
 _hard:
-	b _hard
-
 .thumb_func
-.global _pagefault
 _pagefault:
-	b _pagefault
-
 .thumb_func
-.global _busfault
 _busfault:
-	b _busfault
-
 .thumb_func
-.global _usagefault
 _usagefault:
-	b _usagefault
-
 .thumb_func
-.global _svcall
 _svcall:
-	b _svcall
-
 .thumb_func
-.global _pendsv
 _pendsv:
-	b _pendsv
-
 .thumb_func
-.global _systick
 _systick:
-	b _systick
-
 .thumb_func
-.global _irqdef
 _irqdef:
-	b _irqdef
+	push {r4-r11}
+	mrs r0, ipsr
+	sub r0, #16
+	add r1, sp, #64
+	push {r0,r1,r14}
+	mov r0, r13
+	sub sp, #4 /* restore 8-byte alignment */
+	bl trap
+	add sp, #4
+	pop {r0,r1,r14}
+	pop {r4-r11}
+	bx lr
+
+.global trap
+.weak trap
+trap:
+	B trap

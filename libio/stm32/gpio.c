@@ -50,7 +50,7 @@ gpiocfg(int n, int f)
 void
 gpioset(int n, int v)
 {
-	v = (v & 1 | 0x1000) << (n & 15);
+	v = (v & 1 | 0x10000) << (n & 15);
 	switch(n >> 4){
 #ifdef GPIOA
 	case 0: GPIOA->BSRR = v; break;

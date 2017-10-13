@@ -24,11 +24,11 @@ enum {
 	PERGPIOI,
 	PERGPIOJ,
 	PERGPIOK,
+	PERUSB,
 };
 
 void*	peribase(int);
 int	periclk(int, int);
-
 
 void	initclk(void);
 
@@ -84,3 +84,7 @@ enum {
 	GPIOSPEED1 = 0x100,
 	GPIOSPEED2 = 0x200,
 };
+
+void	delayus(uint);
+
+void	irqen(int, int, u8int);
