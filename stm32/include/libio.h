@@ -24,6 +24,7 @@ enum {
 	PERGPIOI,
 	PERGPIOJ,
 	PERGPIOK,
+	PERAFIO,
 	PERUSB,
 };
 
