@@ -5,3 +5,4 @@ wget ftp://ftp.gnu.org/gnu/gcc/gcc-7.2.0/gcc-7.2.0.tar.xz
 tar xJf gcc-7.2.0.tar.xz
 cd gcc-7.2.0
 contrib/download_prerequisites 
+patch -p0 < t-arm-elf.patch
