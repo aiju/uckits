@@ -58,3 +58,23 @@ cqureadnb(CQueue *q, void *d, uint n)
 	splx(x);
 	return n;
 }
+
+int
+cquwrite(CQueue *q, void *d, uint n)
+{
+	int rc;
+	
+	while(rc = cquwritenb(q, d, n), rc == 0)
+		wfi();
+	return rc;
+}
+
+int
+cquread(CQueue *q, void *d, uint n)
+{
+	int rc;
+	
+	while(rc = cqureadnb(q, d, n), rc == 0)
+		wfi();
+	return rc;
+}

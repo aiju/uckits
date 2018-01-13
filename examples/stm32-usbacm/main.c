@@ -4,14 +4,10 @@
 #include <libio.h>
 #include <usb.h>
 
-USBEp usbep[4];
-int ROM usbmaxep = nelem(usbep);
-
 enum {
 	DISCON = PORTB(9),
 	USBDP = PORTA(12),
-	USBDM = PORTA(11),
-	LED = PORTB(1)
+	USBDM = PORTA(11)
 };
 
 void
@@ -29,21 +25,19 @@ main()
 	gpiocfg(DISCON, GPIOOUT);
 	gpiocfg(USBDP, GPIOOUT | GPIOALT | GPIOSPEED2);
 	gpiocfg(USBDM, GPIOOUT | GPIOALT | GPIOSPEED2);
-	gpiocfg(LED, GPIOOUT);
 	usbacminit();
 	irqen(USB_LP_IRQn, 1, 0);
 	
-	for(;;){
-		if(cqureadnb(&usbacmrxqu, &c, 1) > 0)
-			cquwritenb(&usbacmtxqu, &c, 1);
-	}
+	for(;;)
+		if(cquread(&usbacmrxqu, &c, 1) > 0)
+			cquwrite(&usbacmtxqu, &c, 1);
 }
 
 void
 trap(Ureg *ur)
 {
 	switch(ur->irq){
-	case USB_LP_IRQn: gpioset(LED, 1); usbirq(); gpioset(LED, 0); break;
+	case USB_LP_IRQn: usbirq(); break;
 	default:
 		for(;;);
 	}

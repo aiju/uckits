@@ -3,6 +3,9 @@
 #include <libio.h>
 #include <usb.h>
 
+USBEp WEAK usbep[4];
+int ROM WEAK usbmaxep = nelem(usbep);
+
 extern USBDesc usbacmdesc[];
 #define txep (&usbep[2])
 #define rxep (&usbep[3])
@@ -80,7 +83,7 @@ usbacminit(void)
 	usbinit(usbacmdesc);
 }
 
-int
+int WEAK
 usbconfig(u8int n)
 {
 	switch(n){

@@ -934,6 +934,7 @@ main(int argc, char **argv)
 	}
 	lineno = 1;
 	printf("#include <u.h>\n");
+	printf("#include <libc.h>\n");
 	printf("#include <usb.h>\n");
 	while(peek() >= 0){
 		eval(topassign(), NULL);

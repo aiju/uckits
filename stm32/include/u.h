@@ -78,3 +78,8 @@ static inline void splx(int s)
 {
 	__asm__ volatile("msr primask, %0" :: "r"(s));
 }
+
+static inline void wfi(void)
+{
+	__asm__ volatile("wfi");
+}

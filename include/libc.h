@@ -483,3 +483,5 @@ struct CQueue {
 
 int cquwritenb(CQueue *, void *, uint);
 int cqureadnb(CQueue *, void *, uint);
+int cquwrite(CQueue *, void *, uint);
+int cquread(CQueue *, void *, uint);
