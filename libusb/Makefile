@@ -4,6 +4,10 @@ include ../Makefile.pre
 
 OFILES:=\
 	$(patsubst port/%.c,stm32/%.o,$(wildcard port/*.c)) \
+	$(patsubst port/%.desc,stm32/%.tab.o,$(wildcard port/*.desc)) \
+
+TABFILES:=\
+	$(patsubst port/%.desc,port/%.tab.c,$(wildcard port/*.desc)) \
 
 .PHONY: all
 
@@ -27,10 +31,12 @@ stm32/%.o: port/%.c
 stm32/%.o: fmt/%.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
+port/%.tab.c: port/%.desc $(UCKITS)/gcc/bin/mkdesc
+	mkdesc $< $* > $@
 
 .PHONY: clean
 clean:
-	$(RM) $(OFILES)
+	$(RM) $(OFILES) $(TABFILES)
 
 .PHONY: nuke
 nuke: clean

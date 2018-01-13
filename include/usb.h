@@ -58,13 +58,17 @@ enum {
 	EPIN = 0x80,
 };
 
-void	usbinit(void);
+void	usbinit(USBDesc *);
 void	usbirq(void);
 void	usbepclear(void);
 USBEp*	usbepcfg(u8int, u8int, int, void(*)(USBEp*), void *);
 void	usbepdecfg(USBEp*);
 int	usbepsendnb(USBEp*, void *, uint);
 int	usbeprecvnb(USBEp*, void *, uint);
+
+/* class definitions (usually pull in some versions of user-provided functions) */
+void	usbacminit(void);
+extern CQueue	usbacmrxqu, usbacmtxqu;
 
 /* user-provided */
 int	usbconfig(u8int);

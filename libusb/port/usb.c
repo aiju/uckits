@@ -3,6 +3,8 @@
 #include <libio.h>
 #include <usb.h>
 
+USBDesc *usbdesctab;
+
 void
 usbepclear(void)
 {
@@ -56,8 +58,9 @@ usbepdecfg(USBEp *ep)
 }
 
 void
-usbinit(void)
+usbinit(USBDesc *desc)
 {
+	usbdesctab = desc;
 	memset(usbep, 0, usbmaxep * sizeof(USBEp));
 	usbep0reset();
 	usbphyinit();

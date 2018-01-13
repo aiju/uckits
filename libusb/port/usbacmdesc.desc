@@ -1,0 +1,53 @@
+Device, 0 = Device {
+	idVendor = 0x6666;
+	idProduct = 0xBEEF;
+	iManufacturer = "uckits";
+	iProduct = "usb serial";
+	bDeviceClass = 2;
+};
+Configuration, 0 =
+	Configuration {
+		bNumInterfaces = 2;
+		bConfigurationValue = 1;
+	},
+	Interface {
+		bInterfaceNumber = 0;
+		bNumEndpoints = 1;
+		bInterfaceClass = 2;
+		bInterfaceSubClass = 2;
+		bInterfaceProtocol = 0;
+	},
+	Endpoint {
+		bEndpointAddress = 0x81;
+		bmAttributes = 3;
+		wMaxPacketSize = 16;
+		bInterval = 16;
+	},
+	CDC_Header { },
+	CDC_Union {
+		bControlInterface = 0;
+		bSubordinateInterface = 1;
+	},
+	CDC_ACM {
+		bmCapabilities = 0x00;
+	},
+	Interface {
+		bInterfaceNumber = 1;
+		bNumEndpoints = 2;
+		bInterfaceClass = 10;
+		bInterfaceSubClass = 0;
+		bInterfaceProtocol = 0;
+	},
+	Endpoint {
+		bEndpointAddress = 0x82;
+		bmAttributes = 2;
+		wMaxPacketSize = 16;
+		bInterval = 0;
+	},
+	Endpoint {
+		bEndpointAddress = 0x02;
+		bmAttributes = 2;
+		wMaxPacketSize = 16;
+		bInterval = 0;
+	};
+

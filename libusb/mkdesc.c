@@ -186,6 +186,7 @@ char *filen;
 int lineno;
 Desc *descs;
 Desc **lastdesc = &descs;
+char *prefix = "usbdesc";
 
 int peekchar = -1, peektok = -1;
 
@@ -651,7 +652,7 @@ mklang(void)
 	d->f = mkdesc("String");
 	d->f[2].size = 2;
 	d->f[2].data = strdup("\x09\x04");
-	printf("uchar ROM usbdesc_%s[] = {\n", d->name);
+	printf("uchar ROM %s_%s[] = {\n", prefix, d->name);
 	no = node(ASTDESC, "String");
 	no->desc = d->f;
 	outdesc(d->name, no, 0);
@@ -684,7 +685,7 @@ mkstring(char *n8)
 	d->f = mkdesc("String");
 	d->f[2].size = n;
 	d->f[2].data = (char*) n16;
-	printf("uchar ROM usbdesc_%s[] = {\n", d->name);
+	printf("uchar ROM %s_%s[] = {\n", prefix, d->name);
 	no = node(ASTDESC, "String");
 	no->desc = d->f;
 	outdesc(d->name, no, 0);
@@ -836,7 +837,7 @@ tabdesc(Node *l, Node *r)
 	snprintf(buf, sizeof(buf), "%s%d", *p, l->n2->num);
 	d->name = strdup(buf);
 	d->idx = p - typeids << 8 | l->n2->num;
-	printf("uchar ROM usbdesc_%s[] = {\n", d->name);
+	printf("uchar ROM %s_%s[] = {\n", prefix, d->name);
 	outdesc(d->name, r, totlength(r));
 	printf("};\n");
 	d->f = r->desc;
@@ -874,7 +875,7 @@ eval(Node *n, Field *ctxt)
 		if(ctxt != NULL)
 			descset(ctxt, n->n1->sym, n->n2);
 		else{
-			printf("uchar ROM usbdesc_%s[] = {\n", n->n1->sym);
+			printf("uchar ROM %s_%s[] = {\n", prefix, n->n1->sym);
 			outdesc(n->n1->sym, n->n2, totlength(n->n2));
 			printf("};\n");
 
@@ -902,9 +903,9 @@ desctable(void)
 {
 	Desc *d;
 	
-	printf("USBDesc ROM usbdesc[] = {\n");
+	printf("USBDesc ROM %s[] = {\n", prefix);
 	for(d = descs; d != NULL; d = d->next)
-		printf("\t{0x%.4x, sizeof(usbdesc_%s), usbdesc_%s},\n", d->idx, d->name, d->name);
+		printf("\t{0x%.4x, sizeof(%s_%s), %s_%s},\n", d->idx, prefix, d->name, prefix, d->name);
 	printf("\t{0, 0, nil},\n");
 	printf("};\n");	
 }
@@ -917,6 +918,9 @@ main(int argc, char **argv)
 		fin = stdin;
 		filen = "<stdin>";
 		break;
+	case 3:
+		prefix = argv[2];
+		/* wet floor */
 	case 2:
 		fin = fopen(argv[1], "r");
 		if(fin == NULL){
@@ -926,7 +930,7 @@ main(int argc, char **argv)
 		filen = argv[1];
 		break;
 	default:
-		fprintf(stderr, "usage: %s [ file ]\n", argv[0]);
+		fprintf(stderr, "usage: %s [ file [ prefix ] ]\n", argv[0]);
 	}
 	lineno = 1;
 	printf("#include <u.h>\n");

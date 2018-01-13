@@ -46,14 +46,14 @@ usb_ep0_Set_Address(USBReq *r)
 int WEAK
 usb_ep0_Get_Descriptor(USBReq *r)
 {
-	extern USBDesc usbdesc[];
 	int dlen;
 	USBDesc *p;
+	extern USBDesc *usbdesctab;
 	
 	if(r->bmRequestType != 0x80)
 		return -1;
 	usbdebug("Get_Descriptor(%#.4ux)\n", r->wValue);
-	for(p = usbdesc; p->data != nil; p++)
+	for(p = usbdesctab; p->data != nil; p++)
 		if(p->idx == r->wValue)
 			break;
 	if(p->data == nil)

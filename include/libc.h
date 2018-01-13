@@ -470,3 +470,16 @@ extern char errbuf[];
 extern char Enodev[];
 extern char Ebadctl[];
 extern char Eio[];
+
+typedef struct CQueue CQueue;
+
+struct CQueue {
+	uchar *d;
+	u16int wr, rd, sz;
+	
+	void (*fntxkick)(CQueue *);
+	void (*fnrxkick)(CQueue *);
+};
+
+int cquwritenb(CQueue *, void *, uint);
+int cqureadnb(CQueue *, void *, uint);
