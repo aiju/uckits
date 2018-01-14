@@ -64,6 +64,8 @@ cquwrite(CQueue *q, void *d, uint n)
 {
 	int rc;
 	
+	if(n == 0)
+		return 0;
 	while(rc = cquwritenb(q, d, n), rc == 0)
 		wfi();
 	return rc;
@@ -74,6 +76,8 @@ cquread(CQueue *q, void *d, uint n)
 {
 	int rc;
 	
+	if(n == 0)
+		return 0;
 	while(rc = cqureadnb(q, d, n), rc == 0)
 		wfi();
 	return rc;

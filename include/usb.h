@@ -58,7 +58,7 @@ enum {
 	EPIN = 0x80,
 };
 
-void	usbinit(USBDesc *);
+void	usbinit(USBDesc *, USBEp *, int, int (*)(u8int));
 void	usbirq(void);
 void	usbepclear(void);
 USBEp*	usbepcfg(u8int, u8int, int, void(*)(USBEp*), void *);
@@ -66,15 +66,12 @@ void	usbepdecfg(USBEp*);
 int	usbepsendnb(USBEp*, void *, uint);
 int	usbeprecvnb(USBEp*, void *, uint);
 
-/* class definitions (usually pull in some versions of user-provided functions) */
+/* class definitions */
 void	usbacminit(void);
 extern CQueue	usbacmrxqu, usbacmtxqu;
 
 /* user-provided */
-int	usbconfig(u8int);
 void	usbdisconnect(int);
-extern USBEp	usbep[];
-extern int	usbmaxep;
 
 /* internal functions */
 void	usbep0complete(USBReq *);
@@ -87,5 +84,9 @@ void	usbreset(void);
 void	usbphysetaddr(u8int);
 int	usbphyepcfg(USBEp *);
 void	usbphyepdecfg(USBEp *);
+
+extern int	(*usbconfig)(u8int);
+extern USBEp*	usbep;
+extern int	usbmaxep;
 
 #define usbdebug(...)

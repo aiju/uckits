@@ -3,8 +3,7 @@
 #include <libio.h>
 #include <usb.h>
 
-USBEp WEAK usbep[4];
-int ROM WEAK usbmaxep = nelem(usbep);
+static USBEp usbacmep[4];
 
 extern USBDesc usbacmdesc[];
 #define txep (&usbep[2])
@@ -14,7 +13,7 @@ CQueue usbacmrxqu, usbacmtxqu;
 enum { MAXPKT = 8 };
 static uchar rxbuf[512], txbuf[512];
 static uchar rpkt[MAXPKT], tpkt[MAXPKT];
-static int rpktp, rpktl, tpktl;
+static int rpktp, rpktl, tpktp, tpktl;
 
 static void
 eprecv(USBEp *ep)
@@ -22,7 +21,7 @@ eprecv(USBEp *ep)
 	int n;
 
 	if(rpktp < rpktl){
-		n = cquwritenb(&usbacmrxqu, rpkt + rpktp, rpktl);
+		n = cquwritenb(&usbacmrxqu, rpkt + rpktp, rpktl - rpktp);
 		if(n > 0)
 			rpktp += n;
 	}
@@ -47,20 +46,18 @@ epsend(USBEp *ep)
 {
 	int n;
 
-	if(tpktl != 0){
-		n = usbepsendnb(ep, tpkt, tpktl);
-		if(n >= 0)
-			tpktl = 0;
-		else
-			return;
+	if(tpktp < tpktl){
+		n = usbepsendnb(ep, tpkt + tpktp, tpktl - tpktp);
+		if(n > 0)
+			tpktp += n;
 	}
+	if(tpktp < tpktl)
+		return;
 	n = cqureadnb(&usbacmtxqu, tpkt, MAXPKT);
 	if(n > 0){
+		tpktl = n;
 		n = usbepsendnb(ep, tpkt, n);
-		if(n >= 0)
-			tpktl = 0;
-		else
-			tpktl = n;
+		tpktp = n > 0 ? n : 0;
 	}
 }
 
@@ -69,22 +66,9 @@ qusend(CQueue *qu)
 {
 	epsend(txep);
 }
-void
-usbacminit(void)
-{
-	memset(&usbacmrxqu, 0, sizeof(CQueue));
-	memset(&usbacmtxqu, 0, sizeof(CQueue));
-	usbacmrxqu.d = rxbuf;
-	usbacmrxqu.sz = sizeof(rxbuf);
-	usbacmrxqu.fntxkick = qurecv;
-	usbacmtxqu.d = txbuf;
-	usbacmtxqu.sz = sizeof(txbuf);
-	usbacmtxqu.fnrxkick = qusend;
-	usbinit(usbacmdesc);
-}
 
-int WEAK
-usbconfig(u8int n)
+static int
+usbacmconfig(u8int n)
 {
 	switch(n){
 	case 0:
@@ -99,4 +83,18 @@ usbconfig(u8int n)
 	default:
 		return -1;
 	}
+}
+
+void
+usbacminit(void)
+{
+	memset(&usbacmrxqu, 0, sizeof(CQueue));
+	memset(&usbacmtxqu, 0, sizeof(CQueue));
+	usbacmrxqu.d = rxbuf;
+	usbacmrxqu.sz = sizeof(rxbuf);
+	usbacmrxqu.fntxkick = qurecv;
+	usbacmtxqu.d = txbuf;
+	usbacmtxqu.sz = sizeof(txbuf);
+	usbacmtxqu.fnrxkick = qusend;
+	usbinit(usbacmdesc, usbacmep, nelem(usbacmep), usbacmconfig);
 }

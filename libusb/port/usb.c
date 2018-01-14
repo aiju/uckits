@@ -4,6 +4,9 @@
 #include <usb.h>
 
 USBDesc *usbdesctab;
+USBEp *usbep;
+int (*usbconfig)(u8int);
+int usbmaxep;
 
 void
 usbepclear(void)
@@ -58,9 +61,12 @@ usbepdecfg(USBEp *ep)
 }
 
 void
-usbinit(USBDesc *desc)
+usbinit(USBDesc *desc, USBEp *ep, int nep, int (*cfg)(u8int))
 {
 	usbdesctab = desc;
+	usbconfig = cfg;
+	usbep = ep;
+	usbmaxep = nep;
 	memset(usbep, 0, usbmaxep * sizeof(USBEp));
 	usbep0reset();
 	usbphyinit();
