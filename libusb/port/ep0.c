@@ -158,6 +158,12 @@ static ROM int (*ep0stdhandler[])(USBReq*) = {
 };
 
 int WEAK
+usbvendreq(USBReq *r)
+{
+	return -1;
+}
+
+int WEAK
 usbep0req(USBReq *r)
 {
 	switch(r->bmRequestType & RTTYPE){
@@ -165,6 +171,8 @@ usbep0req(USBReq *r)
 		if(r->bRequest >= nelem(ep0stdhandler) || ep0stdhandler[r->bRequest] == nil)
 			return -1;
 		return ep0stdhandler[r->bRequest](r);
+	case RTVENDOR:
+		return usbvendreq(r);
 	default:
 		return -1;
 	}

@@ -72,6 +72,7 @@ extern CQueue	usbacmrxqu, usbacmtxqu;
 
 /* user-provided */
 void	usbdisconnect(int);
+int	usbvendreq(USBReq *);
 
 /* internal functions */
 void	usbep0complete(USBReq *);

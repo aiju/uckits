@@ -236,7 +236,7 @@ ep0rxdata(USBReq *req)
 
 	n = ep0.pmatab[6] & 0x3ff;
 	for(i = 0; i < n; i += 2)
-		*(u16int*)(req->data + req->ptr + i) = ep0.pmatx[i];
+		*(u16int*)(req->data + req->ptr + i) = ep0.pmarx[i];
 	req->ptr += n;
 	ep0.pmatab[6] &= ~0x3ff;
 	if(n == ep0.maxpkt && req->ptr != req->wLength){
