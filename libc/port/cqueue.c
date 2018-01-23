@@ -82,3 +82,69 @@ cquread(CQueue *q, void *d, uint n)
 		wfi();
 	return rc;
 }
+
+int
+cqugetcnb(CQueue *q)
+{
+	int x, rc, wasfull;
+	
+	x = splhi();
+	if(q->wr == q->rd){
+		splx(x);
+		return -1;
+	}
+	wasfull = (u16int)(q->rd + q->sz) == q->wr;
+	rc = q->d[q->rd++ & q->sz - 1];
+	if(wasfull && q->fntxkick != nil)
+		q->fntxkick(q);
+	splx(x);
+	return rc;
+}
+
+int
+cqugetc(CQueue *q)
+{
+	int rc;
+	
+	while(rc = cqugetcnb(q), rc < 0)
+		;
+	return rc;
+}
+
+int
+cquputcnb(CQueue *q, uchar c)
+{
+	int x;
+	int wasempty;
+	
+	x = splhi();
+	if((u16int)(q->rd + q->sz) == q->wr){
+		splx(x);
+		return -1;
+	}
+	wasempty = q->rd == q->wr;
+	q->d[q->wr++ & q->sz - 1] = c;
+	if(wasempty && q->fnrxkick != nil)
+		q->fnrxkick(q);
+	splx(x);
+	return 1;
+}
+
+void
+cquputc(CQueue *q, uchar c)
+{
+	while(cquputcnb(q, c) < 0)
+		;
+}
+
+int
+cqucanread(CQueue *q)
+{
+	int x;
+	int rc;
+	
+	x = splhi();
+	rc = (u16int)(q->wr - q->rd);
+	splx(x);
+	return rc;
+}

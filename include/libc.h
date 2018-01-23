@@ -485,3 +485,8 @@ int cquwritenb(CQueue *, void *, uint);
 int cqureadnb(CQueue *, void *, uint);
 int cquwrite(CQueue *, void *, uint);
 int cquread(CQueue *, void *, uint);
+int cqugetcnb(CQueue *);
+int cqugetc(CQueue *);
+int cquputcnb(CQueue *, uchar c);
+void cquputc(CQueue *, uchar c);
+int cqucanread(CQueue *);
