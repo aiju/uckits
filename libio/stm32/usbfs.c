@@ -366,15 +366,13 @@ usbirq(void)
 				}
 			}
 			if((*r & USB_EP_CTR_RX) != 0){
-				if(eprx[i] == 0xff){
+				*r = *r & (USB_EPREG_MASK & ~USB_EP_CTR_RX) | USB_EP_CTR_TX;
+				if(eprx[i] == 0xff)
 					usbdebug("USB: RX complete on unconfigured endpoint\n");
-					*r = *r & (USB_EPREG_MASK & ~USB_EP_CTR_RX) | USB_EP_CTR_TX;
-				}else{
+				else{
 					ep = usbep + eprx[i];
 					if(ep->act != nil)
 						ep->act(ep);
-					else
-						*r = *r & (USB_EPREG_MASK & ~USB_EP_CTR_RX) | USB_EP_CTR_TX;
 				}
 			}
 		}
@@ -396,7 +394,7 @@ usbepsendnb(USBEp *ep, void *d, uint n)
 	for(i = 0; i < n; i += 2)
 		ep->pmatx[i] = *(u16int*)((u8int*)d + i);
 	ep->pmatab[2] = n;
-	*ep->reg = *ep->reg & (USB_EPREG_MASK & ~USB_EP_CTR_TX | USB_EPTX_STAT) ^ USB_EP_TX_VALID | USB_EP_CTR_RX;
+	*ep->reg = *ep->reg & (USB_EPREG_MASK | USB_EPTX_STAT) ^ USB_EP_TX_VALID | USB_EP_CTR_RX | USB_EP_CTR_TX;
 	splx(s);
 	return n;
 }
@@ -407,7 +405,7 @@ usbeprecvnb(USBEp *ep, void *d, uint n)
 	int s, i;
 	
 	s = splhi();
-	if((ep->addr & EPDIR) != EPOUT || (*ep->reg & USB_EP_CTR_RX) == 0){
+	if((ep->addr & EPDIR) != EPOUT || (*ep->reg & USB_EPRX_STAT) != USB_EP_RX_NAK){
 		splx(s);
 		return -1;
 	}
@@ -418,7 +416,7 @@ usbeprecvnb(USBEp *ep, void *d, uint n)
 	if(i != n)
 		*(u8int*)((u8int*)d + i) = ep->pmarx[i];
 	ep->pmatab[6] &= ~0x3ff;
-	*ep->reg = *ep->reg & (USB_EPREG_MASK & ~USB_EP_CTR_RX | USB_EPRX_STAT) ^ USB_EP_RX_VALID | USB_EP_CTR_TX;
+	*ep->reg = *ep->reg & (USB_EPREG_MASK | USB_EPRX_STAT) ^ USB_EP_RX_VALID | USB_EP_CTR_TX | USB_EP_CTR_RX;
 	splx(s);
 	return n;
 }
