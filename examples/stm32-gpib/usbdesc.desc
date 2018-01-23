@@ -1,0 +1,32 @@
+Device, 0 = Device {
+	idVendor = 0x6666;
+	idProduct = 0x691B;
+	iManufacturer = "aiju";
+	iProduct = "USB-GPIB adapter";
+	bDeviceClass = 2;
+};
+Configuration, 0 =
+	Configuration {
+		bNumInterfaces = 1;
+		bConfigurationValue = 1;
+	},
+	Interface {
+		bInterfaceNumber = 0;
+		bNumEndpoints = 2;
+		bInterfaceClass = 0xff;
+		bInterfaceSubClass = 0xff;
+		bInterfaceProtocol = 0xff;
+	},
+	Endpoint {
+		bEndpointAddress = 0x81;
+		bmAttributes = 2;
+		wMaxPacketSize = 64;
+		bInterval = 0;
+	},
+	Endpoint {
+		bEndpointAddress = 0x01;
+		bmAttributes = 2;
+		wMaxPacketSize = 64;
+		bInterval = 0;
+	}
+;
