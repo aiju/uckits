@@ -490,3 +490,4 @@ int cqugetc(CQueue *);
 int cquputcnb(CQueue *, uchar c);
 void cquputc(CQueue *, uchar c);
 int cqucanread(CQueue *);
+void cquclear(CQueue *);

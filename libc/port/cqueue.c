@@ -1,6 +1,16 @@
 #include <u.h>
 #include <libc.h>
 
+void
+cquclear(CQueue *q)
+{
+	int x;
+	
+	x = splhi();
+	q->rd = q->wr = 0;
+	splx(x);
+}
+
 int
 cquwritenb(CQueue *q, void *d, uint n)
 {
