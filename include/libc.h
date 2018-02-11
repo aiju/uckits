@@ -315,7 +315,7 @@ extern	long	labs(long);
 extern	double	ldexp(double, int);
 extern	void	longjmp(jmp_buf, int);
 extern	double	modf(double, double*);
-extern  double  round(double);
+extern	double	round(double);
 extern	double	pow10(int);
 extern	int	putenv(char*, char*);
 extern	void	qsort(void*, long, long, int (*)(void*, void*));
