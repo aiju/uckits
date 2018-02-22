@@ -16,6 +16,9 @@ SECTIONS {
 	.rodata : {
 		*(.rodata)
 	} >rom
+        .ARM.exidx : {
+                *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+        } >rom
 	_etext = .;
 	.data : {
 		_data = .;
