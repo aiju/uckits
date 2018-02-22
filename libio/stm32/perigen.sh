@@ -37,6 +37,7 @@ sed -n 's/^#define RCC_\([A-Z0-9]\+\)ENR\([0-9]*\)_USB\(FS\)\?EN .*$/\1;\2;\3/gp
 sed -n 's/^#define RCC_\([A-Z0-9]\+\)ENR\([0-9]*\)_AFIOEN .*$/\1;\2/gp' $H | awk -F';' ' { printf "\tcase PERAFIO%s:\n\t\tif(st > 0) RCC->%sENR%s |= RCC_%sENR%s_AFIO%sEN;\n\t\telse if(st == 0) RCC->%sENR%s &= ~RCC_%sENR%s_AFIO%sEN;\n\t\treturn %shz;\n", $3, $1, $2, $1, $2, $3, $1, $2, $1, $2, $3, tolower($1) } '
 sed -n 's/^#define RCC_\([A-Z0-9]\+\)ENR\([0-9]*\)_TIM\([0-9]\+\)EN .*$/\1;\2;\3/gp' $H | awk -F';' ' { printf "\tcase PERTIM%d:\n\t\tif(st > 0) RCC->%sENR%s |= RCC_%sENR%s_TIM%sEN;\n\t\telse if(st == 0) RCC->%sENR%s &= ~RCC_%sENR%s_TIM%sEN;\n\t\treturn %shz;\n", $3, $1, $2, $1, $2, $3, $1, $2, $1, $2, $3, tolower($1) } '
 sed -n 's/^#define RCC_\([A-Z0-9]\+\)ENR\([0-9]*\)_I2C\([0-9]\+\)EN .*$/\1;\2;\3/gp' $H | awk -F';' ' { printf "\tcase PERI2C%d:\n\t\tif(st > 0) RCC->%sENR%s |= RCC_%sENR%s_I2C%sEN;\n\t\telse if(st == 0) RCC->%sENR%s &= ~RCC_%sENR%s_I2C%sEN;\n\t\treturn %shz;\n", $3, $1, $2, $1, $2, $3, $1, $2, $1, $2, $3, tolower($1) } '
+sed -n 's/^#define RCC_\([A-Z0-9]\+\)ENR\([0-9]*\)_SPI\([0-9]\+\)EN .*$/\1;\2;\3/gp' $H | awk -F';' ' { printf "\tcase PERSPI%d:\n\t\tif(st > 0) RCC->%sENR%s |= RCC_%sENR%s_SPI%sEN;\n\t\telse if(st == 0) RCC->%sENR%s &= ~RCC_%sENR%s_SPI%sEN;\n\t\treturn %shz;\n", $3, $1, $2, $1, $2, $3, $1, $2, $1, $2, $3, tolower($1) } '
 cat <<END
 	default:
 		werrstr1(Enodev);

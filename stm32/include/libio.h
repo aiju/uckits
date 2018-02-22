@@ -53,6 +53,12 @@ enum {
 	PERI2C2,
 	PERI2C3,
 	PERI2C4,
+	PERSPI1,
+	PERSPI2,
+	PERSPI3,
+	PERSPI4,
+	PERSPI5,
+	PERSPI6,
 };
 
 void*	peribase(int);
