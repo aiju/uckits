@@ -1,6 +1,6 @@
 typedef struct Uart Uart;
 
-extern int apb1hz, apb2hz, ahbhz;
+extern int apb1hz, apb2hz, apb3hz, apb4hz, ahbhz;
 
 enum {
 	PERUSART1,
@@ -49,6 +49,10 @@ enum {
 	PERTIM21,
 	PERTIM22,
 	PERTIM23,
+	PERI2C1,
+	PERI2C2,
+	PERI2C3,
+	PERI2C4,
 };
 
 void*	peribase(int);
