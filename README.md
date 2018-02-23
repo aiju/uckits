@@ -1,4 +1,4 @@
-This is my ambitious goal to create a multi-platform 'framework' for C microcontroller stuff.
+This is my ambitious project with the goal to create a multi-platform 'framework' for C microcontroller stuff.
 
 Goals:
 
