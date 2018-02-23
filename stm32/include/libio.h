@@ -122,3 +122,12 @@ enum {
 void	delayus(uint);
 
 void	irqen(int, int, u8int);
+
+enum {
+	EXTIRQRISE = 1,
+	EXTIRQFALL = 2,
+};
+
+int	extirqcfg(int, int, int);
+int	extirqen(int, int);
+void	extirqack(int);
