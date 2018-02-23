@@ -2,6 +2,8 @@
 #include <libc.h>
 #include <libio.h>
 
+extern void _libioinit();
+
 void
 _init(void)
 {
@@ -14,7 +16,9 @@ _init(void)
 		*q++ = *p++;
 	while(q < (u32int *) _end)
 		*q++ = 0;
-	
+
 	for(i = PERGPIOA; i <= PERAFIO; i++)
 		periclk(i, 1);
+
+	_libioinit();
 }
