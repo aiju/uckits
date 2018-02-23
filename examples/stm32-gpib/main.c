@@ -18,6 +18,7 @@ static int rpktp, rpktl, tpktp, tpktl;
 
 uchar readeoi;
 u16int readeos;
+uchar wasreset;
 
 enum {
 	USBDP = PORTA(12),
@@ -103,7 +104,7 @@ recvb(void)
 	gpiocfg(NRFD, GPIOIN);
 	gpiocfg(NDAC, GPIOOUT);
 	while(gpioget(DAV))
-		if(cqucanread(&rxqu)){
+		if(wasreset || cqucanread(&rxqu)){
 			print("read aborted\n");
 			gpiocfg(NRFD, GPIOOUT);
 			return -1;
@@ -187,6 +188,9 @@ myusbconfig(u8int c)
 		usbepclear();
 		return 0;
 	case 1:
+		wasreset = 1;
+		cquclear(&txqu);
+		cquclear(&rxqu);
 		usbepclear();
 		usbepcfg(EPIN | 1, EPBULK, MAXPKT, epsend, nil);
 		usbepcfg(EPOUT | 1, EPBULK, MAXPKT, eprecv, nil);
@@ -229,9 +233,13 @@ readbytes(u32int l)
 {
 	int c;
 
+	splhi();
+	wasreset = 0;
 	while(l--){
+		spllo();
 		c = recvb();
-		if(c < 0)
+		splhi();
+		if(wasreset || c < 0)
 			break;
 		if(c >= 0x100)
 			cquputc(&txqu, ChEOI);
@@ -244,6 +252,7 @@ readbytes(u32int l)
 		if((readeos & 0x1400) == 0x1400 && (c & 0xff) == (readeos & 0xff))
 			break;
 	}
+	spllo();
 }
 
 void
