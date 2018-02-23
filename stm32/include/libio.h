@@ -91,6 +91,7 @@ int	uartread(Uart *, void *, size_t);
 void	gpiocfg(int, int);
 void	gpioset(int, int);
 int	gpioget(int);
+int	gpiogeto(int);
 
 #define PORTA(n) ((n)&15)
 #define PORTB(n) (0x10|(n)&15)

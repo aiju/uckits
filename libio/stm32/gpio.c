@@ -130,3 +130,44 @@ gpioget(int n)
 	default: return 0;
 	}
 }
+
+int
+gpiogeto(int n)
+{
+	switch(n >> 4){
+#ifdef GPIOA
+	case 0: return GPIOA->ODR >> (n & 15) & 1;
+#endif
+#ifdef GPIOB
+	case 1: return GPIOB->ODR >> (n & 15) & 1;
+#endif
+#ifdef GPIOC
+	case 2: return GPIOC->ODR >> (n & 15) & 1;
+#endif
+#ifdef GPIOD
+	case 3: return GPIOD->ODR >> (n & 15) & 1;
+#endif
+#ifdef GPIOE
+	case 4: return GPIOE->ODR >> (n & 15) & 1;
+#endif
+#ifdef GPIOF
+	case 5: return GPIOF->ODR >> (n & 15) & 1;
+#endif
+#ifdef GPIOG
+	case 6: return GPIOG->ODR >> (n & 15) & 1;
+#endif
+#ifdef GPIOH
+	case 7: return GPIOH->ODR >> (n & 15) & 1;
+#endif
+#ifdef GPIOI
+	case 8: return GPIOI->ODR >> (n & 15) & 1;
+#endif
+#ifdef GPIOJ
+	case 9: return GPIOJ->ODR >> (n & 15) & 1;
+#endif
+#ifdef GPIOK
+	case 10: return GPIOK->ODR >> (n & 15) & 1;
+#endif
+	default: return 0;
+	}
+}
