@@ -19,6 +19,7 @@ Progress so far:
 
 Build instructions:
 
+- define $UCKITS in your environment to point to the repository
 - cd ext ; sh fetch.sh to download gcc and binutils
 - cd gcc ; sh build.sh to build gcc
 - make in top level to build libraries
