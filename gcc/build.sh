@@ -6,6 +6,8 @@ mkdir -p build-binutils
 cd build-binutils
 ../$BINSRC/configure --target=arm-none-eabi --prefix=$(pwd)/.. --disable-libssp --disable-nls --disable-werror --disable-libstdcxx
 make -j$JOBS
+make install
+cd ../build-binutils
 
 mkdir -p build-gcc
 cd build-gcc
